@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2>Agenda</h2>
+    <p>Bem-vindo a sua agenda</p>
+    <div class="mb-3">
+        <a href="/novo-contato" class="btn btn-primary">Novo Contato</a> |
+        <a href="/perfil" class="btn btn-secondary">Perfil</a> |
+        <a href="/logout" class="btn btn-danger">Logout</a>
+    </div>
+
+    <form action="/pesquisar-contatos" method="get" class="mb-3">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Pesquisar contatos por nome" name="query">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Pesquisar</button>
+            </div>
+        </div>
+    </form>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Endereço</th>
+            <th>Telefones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contato : ${contatos}">
+            <td th:text="${contato.nome}"></td>
+            <td th:text="${contato.email}"></td>
+            <td th:text="${contato.endereco}"></td>
+            <td>
+                <ul th:if="${not #lists.isEmpty(contato.telefones)}">
+                    <li th:each="telefone : ${contato.telefones}" th:text="${telefone}"></li>
+                </ul>
+                <span th:if="${#lists.isEmpty(contato.telefones)}">Nenhum telefone cadastrado</span>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(contatos)}">
+            <td colspan="4">Nenhum contato cadastrado.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
